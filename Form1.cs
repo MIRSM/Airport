@@ -34,7 +34,6 @@ namespace Airport
         {
             InitializeComponent();
             DataBase = new DataBase();
-            DataBase.Connect();
         }
 
         public List<string[]> GetData(int number, string date1, string date2 = null)
