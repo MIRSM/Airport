@@ -16,7 +16,7 @@ namespace Airport
             _connection = Connect();
             _connection.Open();
 
-            /* Рефакторинг: Составление методов (вынесение метода)
+            /* Рефакторинг: 1. Составление методов (вынесение метода)
              * string datasource = @"";
 
             string database = "database_name";

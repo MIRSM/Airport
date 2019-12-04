@@ -18,6 +18,7 @@ namespace Airport
 
     public partial class Form1 : Form
     {
+        private const int MAGIC_NUMER_FOR_SMALL_SEARCH = 10;
         /*
          * Класс клиент. Создается при бронировании/покупке. ФИО, паспортные данные
          * Работа приложения. Клиент вводит дату отправления, а также места откуда и куда. 
@@ -36,7 +37,21 @@ namespace Airport
             DataBase = new DataBase();
         }
 
-        public List<string[]> GetData(int number, string date1, string date2 = null)
+        //рефакторинг: 3."Организация данных" Замена магического числа символьной константой
+        //магическое число 10
+        private void SmallSearch()
+        {
+            //  for(int i = 0; i < 10; i++)
+            for (int i = 0; i < MAGIC_NUMER_FOR_SMALL_SEARCH; i++)
+            {
+                //тут выполняется небольшой поиск 
+                //доступных маршрутов
+            }
+        }
+
+        //рефакторинг: 5."Упрощение вызовов методов" Переименование метода
+        public List<string[]> GetInfoAboutTrip(int number, string date1, string date2 = null)
+        //public List<string[]> GetData(int number, string date1, string date2 = null)
         {
             return DataBase.GetData(number, date1, date2);
         }
@@ -50,9 +65,13 @@ namespace Airport
             return ticket;
         }
 
-        public void SaveTicket(Ticket ticket, SaveType saveType)
+        //рефакторинг: 4."Упрощение условных выражений" Замена условного оператора полиморфизмом,
+        //рефакторинг: 2. "Перемещение функций между объектами" Введение внешнего метода
+        public void SaveTicket(Ticket ticket, Saver saver)
         {
-            Saver saver = null;
+            saver.SendData(ticket);
+
+            /*Saver saver = null;
             switch (saveType)
             {
                 case SaveType.PDF:
@@ -62,7 +81,7 @@ namespace Airport
                     saver = new ImageSaver();
                     break;
             }
-            saver.SendData(ticket);
+            saver.SendData(ticket);*/
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Airport
 {
-    public abstract class Place
+    public class Place
     {
         public char Character { get; set; }
         public int Number { get; set; }
