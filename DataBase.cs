@@ -13,8 +13,8 @@ namespace Airport
 
         public DataBase()
         {
-            _connection = Connect();
-            _connection.Open();
+            //_connection = Connect();
+            //_connection.Open();
 
             /* Рефакторинг: 1. Составление методов (вынесение метода)
              * string datasource = @"";

@@ -34,6 +34,7 @@ namespace Airport
         public Form1()
         {
             InitializeComponent();
+            CenterToScreen();
             DataBase = new DataBase();
         }
 
@@ -82,6 +83,38 @@ namespace Airport
                     break;
             }
             saver.SendData(ticket);*/
+        }
+
+        private void btSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbArrival_DropDown(object sender, EventArgs e)
+        {
+            UpdateAirportsComboBox(cbArrival);
+        }
+
+        private void cbDestination_DropDown(object sender, EventArgs e)
+        {
+            UpdateAirportsComboBox(cbDestination);
+        }
+        
+        private void UpdateAirportsComboBox(ComboBox comboBox)
+        {
+            comboBox.Items.Clear();
+            var Airports = GetAirports();
+            for (int i = 0; i < Airports.Length; i++)
+                comboBox.Items.Add(Airports[i]);
+        }
+
+        private string[] GetAirports()
+        {
+            string[] result = new string[1];
+            result[0] = "test";
+            //sql запрос
+
+            return result;
         }
     }
 }
