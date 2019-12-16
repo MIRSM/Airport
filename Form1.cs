@@ -29,13 +29,16 @@ namespace Airport
          * добавить комментарии в код
          */
 
-        DataBase DataBase;
+        public static DataBase DataBase;
 
         public Form1()
         {
             InitializeComponent();
             CenterToScreen();
             DataBase = new DataBase();
+            UpdateAirportsComboBox(cbArrival);
+            UpdateAirportsComboBox(cbDestination);
+            cbArrival.Select();
         }
 
         //рефакторинг: 3."Организация данных" Замена магического числа символьной константой
@@ -51,11 +54,10 @@ namespace Airport
         }
 
         //рефакторинг: 5."Упрощение вызовов методов" Переименование метода
-        public List<string[]> GetInfoAboutTrip(int number, string date1, string date2 = null)
+        //public List<string[]> GetInfoAboutTrip(int number, string date1, string date2 = null)
         //public List<string[]> GetData(int number, string date1, string date2 = null)
-        {
-            return DataBase.GetData(number, date1, date2);
-        }
+        //{
+        //}
 
         public Ticket BuyBookTicket(string date1, string departure, string arrival,
             string firstName, string lastName, string surName,
@@ -87,34 +89,81 @@ namespace Airport
 
         private void btSearch_Click(object sender, EventArgs e)
         {
+            string airportFrom = cbArrival.Text.ToLower();
+            string airportTo = cbDestination.Text.ToLower();
+            string date = mTbDate.Text;
+            int nClass = 1;
+            int Count = (int)numericUpDown1.Value;
+            if (string.IsNullOrWhiteSpace(airportFrom))
+            {
+                MessageBox.Show("Не заполнено поле 'Отправление'");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(airportTo))
+            {
+                MessageBox.Show("Не заполнено поле 'Прибытие'");
+                return;
+            }
+            if (!mTbDate.MaskCompleted)
+            {
+                MessageBox.Show("Некорректно заполнено поле 'Дата'");
+                return;
+            }
+            if (rbFirstClass.Checked)
+                nClass = 3;
+            else if (rbBuisnesClass.Checked)
+                nClass = 2;
+            else
+                nClass = 1;
+            airportFrom = airportFrom.ToUpper()[0] + airportFrom.Substring(1, airportFrom.Length - 1);
+            airportTo = airportTo.ToUpper()[0] + airportTo.Substring(1, airportTo.Length - 1);
 
+            var splitedDate =date.Split('.');
+            date = string.Format("{0}-{1}-{2}",splitedDate[2],splitedDate[0],splitedDate[1]);
+            var result=DataBase.GetInfoFromTo(airportFrom, airportTo, nClass, Count, date);
+            if (result.Count == 0)
+            {
+                MessageBox.Show("Поиск не дал результатов");
+                return;
+            }
+            foreach (var r in result)
+            {
+                //MessageBox.Show(string.Format("{0} {1} {2} {3} {4}", r[0],r[1],r[2],r[3],r[4]));
+                var SplitedDate = r[0].Split('.');
+                r[0] = string.Format("{0}-{1}-{2}", SplitedDate[1], SplitedDate[0], SplitedDate[2]);
+                var splitedDate2 = r[1].Split('.');
+                r[1] = string.Format("{0}-{1}-{2}", splitedDate2[1], splitedDate2[0], splitedDate2[2]);
+            }
+            FormResultOfSearch formResultOfSearch = new FormResultOfSearch(result,nClass);
+            Hide();
+            formResultOfSearch.ShowDialog();
+            Show();
         }
 
-        private void cbArrival_DropDown(object sender, EventArgs e)
-        {
-            UpdateAirportsComboBox(cbArrival);
-        }
-
-        private void cbDestination_DropDown(object sender, EventArgs e)
-        {
-            UpdateAirportsComboBox(cbDestination);
-        }
-        
         private void UpdateAirportsComboBox(ComboBox comboBox)
         {
             comboBox.Items.Clear();
             var Airports = GetAirports();
             for (int i = 0; i < Airports.Length; i++)
                 comboBox.Items.Add(Airports[i]);
+            comboBox.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+            comboBox.AutoCompleteCustomSource.AddRange(Airports);
         }
 
         private string[] GetAirports()
         {
-            string[] result = new string[1];
-            result[0] = "test";
             //sql запрос
+            return DataBase.GetAirports().ToArray();
+        }
 
-            return result;
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                btSearch_Click(this, new EventArgs());
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

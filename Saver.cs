@@ -10,7 +10,7 @@ namespace Airport
     {
 
         //рефакторинг: 6."Решение задач обобщения" Подъём поля
-        private readonly string DEFAULT_SAVE_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        internal readonly string DEFAULT_SAVE_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public virtual void SendData(Ticket ticket)
         {
 

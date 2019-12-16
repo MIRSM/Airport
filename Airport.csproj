@@ -82,6 +82,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AirportDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AirportDBDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataBase.cs" />
     <Compile Include="DBSender.cs" />
     <Compile Include="Finder.cs" />
@@ -90,6 +95,18 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFillTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFillTicket.Designer.cs">
+      <DependentUpon>FormFillTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormResultOfSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormResultOfSearch.Designer.cs">
+      <DependentUpon>FormResultOfSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageSaver.cs" />
     <Compile Include="ISender.cs" />
@@ -102,6 +119,12 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormFillTicket.resx">
+      <DependentUpon>FormFillTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormResultOfSearch.resx">
+      <DependentUpon>FormResultOfSearch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -112,6 +135,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="AirportDBDataSet.xsc">
+      <DependentUpon>AirportDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="AirportDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AirportDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AirportDBDataSet.xss">
+      <DependentUpon>AirportDBDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
