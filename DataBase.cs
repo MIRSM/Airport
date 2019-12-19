@@ -99,10 +99,116 @@ namespace Airport
                 reader.Read();
                 int tarif = reader.GetInt32(0);
                 double coef = reader.GetDouble(1);
-                price =  (int)(tarif*coef);
+                price = (int)(tarif*coef);
             }
             reader.Close();
             return price.ToString();
+        }
+
+        public bool AddUserWithTicket(string Fio, int SeatNumber, int TypeSeatId, int RouteSectionId, int TypeStatusId)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "AddUserWithTicket";
+
+            command.Parameters.AddWithValue("@FIO",Fio);
+            command.Parameters.AddWithValue("@SeatNumber", SeatNumber);
+            command.Parameters.AddWithValue("@TypeSeatId", TypeSeatId);
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            command.Parameters.AddWithValue("@TypeStatusId", TypeStatusId);
+            command.ExecuteNonQuery();
+            return true;
+        }
+
+        public MaxStatistic GetMostPopularRoute()
+        {
+            string Request = "select * from MostPopularRoute";
+            var command = _connection.CreateCommand();
+            command.CommandText = Request;
+            var reader = command.ExecuteReader();
+            MaxStatistic maxStatistic = new MaxStatistic();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                maxStatistic.MaxCount= reader.GetInt32(0);
+                maxStatistic.From= reader.GetString(1);
+                maxStatistic.To = reader.GetString(2);
+            }
+            reader.Close();
+            return maxStatistic;
+        }
+
+        public int ReturnTicket(string Fio, int RouteSectionId)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "ReturnTicket";
+
+            command.Parameters.AddWithValue("@FIO", Fio);
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+
+            return (int)command.ExecuteScalar();
+        }
+
+        public List<int> GetNotAvailablePlaces(int RouteSectionId, int TypeSeatId)
+        {
+            string Request = "select Номер_места from ticket where flight_id in (select id from flight where route_id = (select route_id from route_section where id=@RouteSectionId)) and type_seat_id = @TypeSeatId and  id not in (select ticket_id from status_ticket where status_id=3);";
+            var command = _connection.CreateCommand();
+            command.CommandText = Request;
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            command.Parameters.AddWithValue("@TypeSeatId", TypeSeatId);
+            var reader = command.ExecuteReader();
+            List<int> NotAvailablePlaces = new List<int>();
+            if (reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    NotAvailablePlaces.Add(reader.GetInt32(0));
+                }
+            }
+            reader.Close();
+            return NotAvailablePlaces;
+        }
+
+        public int GetFirstSeatIndex(int RouteSectionId, int TypeSeatId)
+        {
+            string Request = "select number from number_seats where type_seat_id <> @TypeSeatId and type_plane_id in (select type_plane_id from plane where id in (select plane_id from flight where route_id in (select route_id from route_section where id=@RouteSectionId)))";
+            var command = _connection.CreateCommand();
+            command.CommandText = Request;
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            command.Parameters.AddWithValue("@TypeSeatId", TypeSeatId);
+            return (int)command.ExecuteScalar();
+        }
+        
+        public int GetNumberOfSeats(int RouteSectionId, int TypeSeatId)
+        {
+            string Request = "select number from number_seats where type_seat_id=@TypeSeatId and type_plane_id in (select type_plane_id from plane where id in (select plane_id from flight where route_id in (select route_id from route_section where id = @RouteSectionId)))";
+            var command = _connection.CreateCommand();
+            command.CommandText = Request;
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            command.Parameters.AddWithValue("@TypeSeatId", TypeSeatId);
+            return (int)command.ExecuteScalar();
+        }
+
+        public int CheckClientForTicket(string Fio, int RouteSectionId)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "CheckClientForTicket";
+
+            command.Parameters.AddWithValue("@FIO", Fio);
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            return (int)command.ExecuteScalar();
+        }
+
+        public int GetPlace(string Fio, int RouteSectionId)
+        {
+            string Request = "select Номер_места from ticket where client_id = (select id from client where client.full_name = @Fio) and flight_id = (select id from flight where route_id = (select route_id from route_section where id=@RouteSectionId))";
+            var command = _connection.CreateCommand();
+            command.CommandText = Request;
+            command.Parameters.AddWithValue("@RouteSectionId", RouteSectionId);
+            command.Parameters.AddWithValue("@Fio", Fio);
+            return (int)command.ExecuteScalar();
         }
 
         //отправляет данные о покупке билета в бд

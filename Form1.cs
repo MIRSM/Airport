@@ -10,6 +10,13 @@ using System.Windows.Forms;
 
 namespace Airport
 {
+    public struct MaxStatistic
+    {
+        public int MaxCount;
+        public string From;
+        public string To;
+    }
+
     public enum SaveType
     {
         PDF = 0,
@@ -29,6 +36,13 @@ namespace Airport
          * добавить комментарии в код
          */
 
+        /*
+        * Осталось добавить покупку, бронь билетов, возврат билетов
+        * во всех случаях пользователь вводит свою инфу и отправляется запрос в бд
+        * если нужно выкупить, удалить, то проверяется, была ли запись о данном билете в бд
+        * если нужно купить, то проверяется, есть ли такой пользователь в бд (это делает процедура, которая описана у меня в телефоне)
+        * и не забыть сделать форму заполнения билета для каждого пассажира (на главной форме указывается кол-во)
+         */
         public static DataBase DataBase;
 
         public Form1()
@@ -133,8 +147,9 @@ namespace Airport
                 r[0] = string.Format("{0}-{1}-{2}", SplitedDate[1], SplitedDate[0], SplitedDate[2]);
                 var splitedDate2 = r[1].Split('.');
                 r[1] = string.Format("{0}-{1}-{2}", splitedDate2[1], splitedDate2[0], splitedDate2[2]);
+                r[4] = (Convert.ToInt32(r[4]) - DataBase.GetNotAvailablePlaces(Convert.ToInt32(r[6]), nClass).Count).ToString();
             }
-            FormResultOfSearch formResultOfSearch = new FormResultOfSearch(result,nClass);
+            FormResultOfSearch formResultOfSearch = new FormResultOfSearch(result,nClass,Convert.ToInt32(numericUpDown1.Value));
             Hide();
             formResultOfSearch.ShowDialog();
             Show();
@@ -164,6 +179,12 @@ namespace Airport
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void BtMostPopularRoute_Click(object sender, EventArgs e)
+        {
+            var result = DataBase.GetMostPopularRoute();
+            MessageBox.Show($"Самый популярный маршрут: {result.From}-{result.To}: {result.MaxCount} поездок!");
         }
     }
 }
