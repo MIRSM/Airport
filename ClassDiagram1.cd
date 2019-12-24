@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Airport.BuyingNotificator">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BuyingNotificator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Airport.DataBase">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABgEAAAAAAAAAIFAAIAJAAAAAABAEAAAAAAAAABCA=</HashCode>
+      <FileName>DataBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Airport.FormFillTicket">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8AACEAgCACAEABCACIKAFQBCCAoIAACAAhAEAAAAgAI=</HashCode>
+      <FileName>FormFillTicket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Airport.FormResultOfSearch">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAAAAAAAACQAAEAAAACAAAACAAi4JwAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormResultOfSearch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Airport.MainForm">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAABACQAABIAAAKAABgCCAIIAAEAkQACAEIBBAA=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Airport.Notificator">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Notificator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Airport.NotificatorWithTicket">
+    <Position X="7" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>NotificatorWithTicket.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Airport.ReservateNotificator">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReservateNotificator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Airport.MaxStatistic">
+    <Position X="18.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Airport.INotificator">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>INotificator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Airport.INotificatorWithAdditionalInfo">
+    <Position X="4.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>INotificatorWithAdditionalInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Airport.TypeStatus">
+    <Position X="20" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACIAAAAAgAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormFillTicket.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

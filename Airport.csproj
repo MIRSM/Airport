@@ -88,13 +88,12 @@
       <DependentUpon>AirportDBDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="DataBase.cs" />
-    <Compile Include="DBSender.cs" />
-    <Compile Include="Finder.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="INotificatorWithAdditionalInfo.cs" />
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormFillTicket.cs">
       <SubType>Form</SubType>
@@ -108,16 +107,15 @@
     <Compile Include="FormResultOfSearch.Designer.cs">
       <DependentUpon>FormResultOfSearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageSaver.cs" />
-    <Compile Include="ISender.cs" />
-    <Compile Include="PdfSaver.cs" />
-    <Compile Include="Place.cs" />
+    <Compile Include="NotificatorWithTicket.cs" />
+    <Compile Include="ReservateNotificator.cs" />
+    <Compile Include="INotificator.cs" />
+    <Compile Include="BuyingNotificator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Saver.cs" />
-    <Compile Include="Ticket.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Notificator.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormFillTicket.resx">
       <DependentUpon>FormFillTicket.cs</DependentUpon>
@@ -146,6 +144,7 @@
     <None Include="AirportDBDataSet.xss">
       <DependentUpon>AirportDBDataSet.xsd</DependentUpon>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

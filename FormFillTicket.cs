@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Airport
@@ -24,15 +17,18 @@ namespace Airport
         int TypeSeatId;
         int SeatNumber;
         string Fio;
+        public static FormFillTicket FormHandle;
 
         public FormFillTicket(int route_section_id, int nClass,string Date, string AirportFrom,string AirportTo)
         {
             InitializeComponent();
             CenterToScreen();
+            FormHandle = this;
+
             RouteSectionId = route_section_id;
             TypeSeatId = nClass;
 
-            lPrice.Text = Form1.DataBase.GetPrice(route_section_id, nClass);
+            lPrice.Text = DataBase.GetPrice(route_section_id, nClass);
             lDate.Text = Date;
             lArrival.Text = AirportFrom;
             lDestination.Text = AirportTo;
@@ -53,16 +49,18 @@ namespace Airport
         private void BtBuy_Click(object sender, EventArgs e)
         {
             FillParams();
-            Form1.DataBase.AddUserWithTicket(Fio, SeatNumber, TypeSeatId, RouteSectionId, (int)TypeStatus.Bought);
+            DataBase.AddUserWithTicket(Fio, SeatNumber, TypeSeatId, RouteSectionId, (int)TypeStatus.Bought);
             BtUpdateInfo_Click(this, new EventArgs());
+            NotificateSuccess(new BuyingNotificator(), TypeStatus.Bought);
             tbLastName.Enabled = tbName.Enabled = tbSurname.Enabled = cbPlace.Enabled = false;
         }
 
         private void BtReservate_Click(object sender, EventArgs e)
         {
             FillParams();
-            Form1.DataBase.AddUserWithTicket(Fio, SeatNumber, TypeSeatId, RouteSectionId, (int)TypeStatus.Reservated);
+            DataBase.AddUserWithTicket(Fio, SeatNumber, TypeSeatId, RouteSectionId, (int)TypeStatus.Reservated);
             BtUpdateInfo_Click(this, new EventArgs());
+            NotificateSuccess(new ReservateNotificator(), TypeStatus.Reservated);
             tbLastName.Enabled = tbName.Enabled = tbSurname.Enabled = cbPlace.Enabled = false;
         }
 
@@ -106,7 +104,7 @@ namespace Airport
             tbLastName.Text = tbLastName.Text.ToLower();
             tbLastName.Text = $"{tbLastName.Text[0].ToString().ToUpper()}{tbLastName.Text.Substring(1)}";
             Fio = $"{tbSurname.Text} {tbName.Text} {tbLastName.Text}";
-            var result = Form1.DataBase.CheckClientForTicket(Fio, RouteSectionId);
+            var result = DataBase.CheckClientForTicket(Fio, RouteSectionId);
             switch (result)
             {
                 case 0:
@@ -128,15 +126,15 @@ namespace Airport
             if (btReturn.Enabled)
             {
                 cbPlace.Items.Clear();
-                SeatNumber = Form1.DataBase.GetPlace(Fio, RouteSectionId);
+                SeatNumber = DataBase.GetPlace(Fio, RouteSectionId);
                 cbPlace.Items.Add(SeatNumber);
                 cbPlace.Text = SeatNumber.ToString();
             }
             else
             {
-                var ListOfNotAvailablePlaces = Form1.DataBase.GetNotAvailablePlaces(RouteSectionId, TypeSeatId);
-                var FirstindexOfPlace = TypeSeatId == 1 ? Form1.DataBase.GetFirstSeatIndex(RouteSectionId, TypeSeatId) + 1 : 1;
-                var NumberOfSeats = Form1.DataBase.GetNumberOfSeats(RouteSectionId, TypeSeatId);
+                var ListOfNotAvailablePlaces = DataBase.GetNotAvailablePlaces(RouteSectionId, TypeSeatId);
+                var FirstindexOfPlace = TypeSeatId == 1 ? DataBase.GetFirstSeatIndex(RouteSectionId, TypeSeatId) + 1 : 1;
+                var NumberOfSeats = DataBase.GetNumberOfSeats(RouteSectionId, TypeSeatId);
                 for (int i = FirstindexOfPlace; i <= NumberOfSeats; i++)
                 {
                     if (ListOfNotAvailablePlaces.Contains(i))
@@ -146,10 +144,28 @@ namespace Airport
             }
 
         }
-        
+
+        //рефакторинг: 4."Упрощение условных выражений" Замена условного оператора полиморфизмом,
+        //рефакторинг: 2. "Перемещение функций между объектами" Введение внешнего метода
+        public void NotificateSuccess(Notificator notificator, TypeStatus typeStatus)
+        {
+            notificator.Notificate(typeStatus);
+            /*
+            Notificator notificator1= null;
+            switch (typeStatus)
+            {
+                case TypeStatus.Bought:
+                    notificator1=new BuyingNotificator();
+                    break;
+                case TypeStatus.Reservated:
+                    notificator1 = new ReservateNotificator();
+                    break;
+            }
+            notificator.Notificate();*/
+        }
         private void BtReturn_Click(object sender, EventArgs e)
         {
-            Form1.DataBase.ReturnTicket(Fio, RouteSectionId);
+            DataBase.ReturnTicket(Fio, RouteSectionId);
             tbLastName.Enabled = tbName.Enabled = tbSurname.Enabled = false;
             BtUpdateInfo_Click(this, new EventArgs());
         }
